@@ -18,3 +18,16 @@ Please ref to [UDiFF](https://github.com/weiqi-zhang/UDiFF/tree/main) for genera
 Please refer to  `prepare_sketch.py` for details.
 
 ## Training
+### Stage 1: Base Diffusion Model
+To train the base diffusion model:
+```
+bash scripts/train.sh
+
+```
+### Stage 2: Subdivision Diffusion Model
+To train the enhanced subdivision model:
+```
+bash scripts/train_super.sh
+
+```
+Note: All training scripts are located in the `scripts/` directory. Refer to the individual script files for additional configuration options and parameters.
