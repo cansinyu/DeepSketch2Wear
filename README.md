@@ -36,4 +36,4 @@ Inference:
 ```
 Inference:
 ```
-Note: All training scripts are located in the `scripts/` directory. Refer to the individual script files for additional configuration options and parameters.
+Note: All scripts are located in the `scripts/` directory. Refer to the individual script files for additional configuration options and parameters.
