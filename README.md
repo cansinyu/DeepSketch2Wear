@@ -11,15 +11,12 @@ conda activate sketch2style
 ```
 
 ## Data Preparation
-
-We use point clouds in the [Deepfashion]([https://mmlab.ie.cuhk.edu.hk/projects/DeepFashion.html](https://github.com/GAP-LAB-CUHK-SZ/deepFashion3D)) dataset.
-
-### Sample UDF
-
-Please modify the `root` path in `sample_udf.py` and run it.
+### SDF data creation
+Please ref to [SDF-StyleGAN](https://github.com/weiqi-zhang/UDiFF/tree/main) for generating the SDF field from Deepfashion data or your customized data.
 
 ### Sketch data creation
 Please refer to  `prepare_sketch.py` for details.
 
-Please download the required UDF data and sketch features [here](https://pan.baidu.com/s/14_Pb6QocmB_Y8-FqXNTKjg)(password: 6khe). 
----
+Please download the required UDF data and sketch data [here](https://pan.baidu.com/)(password: 6khe). 
+
+## Training
