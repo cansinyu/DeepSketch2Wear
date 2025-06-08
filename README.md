@@ -12,7 +12,7 @@ conda activate sketch2style
 
 ## Data Preparation
 ### SDF data creation
-Please ref to [SDF-StyleGAN](https://github.com/weiqi-zhang/UDiFF/tree/main) for generating the SDF field from Deepfashion data or your customized data.
+Please ref to [UDiFF](https://github.com/weiqi-zhang/UDiFF/tree/main) for generating the UDF field from Deepfashion data or your customized data.
 
 ### Sketch data creation
 Please refer to  `prepare_sketch.py` for details.
