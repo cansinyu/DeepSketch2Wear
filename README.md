@@ -34,6 +34,6 @@ bash scripts/train_super.sh
 ```
 Inference:
 ```
-Inference:
+bash scripts/generate_super.sh
 ```
 Note: All scripts are located in the `scripts/` directory. Refer to the individual script files for additional configuration options and parameters.
