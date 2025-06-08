@@ -36,5 +36,4 @@ Inference:
 ```
 Inference:
 ```
-bash sc
 Note: All training scripts are located in the `scripts/` directory. Refer to the individual script files for additional configuration options and parameters.
