@@ -1,2 +1,77 @@
-# Sketch2Style
-Coming soon !!
+<p align="center">
+<h1 align="center">UDiFF: Generating Conditional Unsigned Distance Fields with Optimal Wavelet Diffusion(CVPR 2024)</h1>
+
+## Installation
+
+We recommend creating an [anaconda](https://www.anaconda.com/) environment using our provided `environment.yml`:
+
+```
+conda env create -f environment.yml
+conda activate udiff
+pip install git+https://github.com/fbcotter/pytorch_wavelets
+```
+
+## Data Preparation
+
+We use point clouds in the [Deepfashion]([https://mmlab.ie.cuhk.edu.hk/projects/DeepFashion.html](https://github.com/GAP-LAB-CUHK-SZ/deepFashion3D)) dataset.
+
+### Sample UDF
+
+Please modify the `root` path in `sample_udf.py` and run it.
+
+### Learn Wavelet
+
+After sampling the UDF from the point cloud, please run `learn_wavelet/train.py` to train the wavelet parameters.
+
+### Convert Wavelet
+
+Finally, you can run ` convert_wavelet.py`  using the checkpoint trained in the previous step. It should be noted that setting the resolution_index to 3 will generate the coarse wavelet coefficients, whereas setting it to 2 will generate the detail wavelet coefficients.
+
+---
+
+At this point you can start training unconditional, if you need to generate text or image conditions, please refer to [openshape](https://github.com/Colin97/OpenShape_code).
+
+## Training
+
+The process of training is primarily governed by the configuration script (config.py or config_highs.py).
+
+It is essential to define `data_files ` direction to the two npy files that have been created.
+
+- Train diffusion model
+
+  ```
+  python trainer/trainer.py --resume_path ./configs/config.py
+  ```
+
+- Train detail predictor
+
+  ```
+  python trainer/trainer.py --resume_path ./configs/config_highs.py
+  ```
+
+## Inference
+
+To execute inference, please modify `models/network_gen.py` by updating the `diffusion_folder` and `high_level_folder`. Additionally, you also need to adjust the `epoch numbers`.
+
+And you can run the following command:
+
+```
+python models/network_gen.py
+```
+
+If you want to generate high quality textures for generated meshes, please refer to [Text2Tex](https://github.com/daveredrum/Text2Tex).
+
+## Pretrained model
+
+We provide the pretrained models: `learned wavelet`,  `diffusion model` and `detail predictor ` of the unconditional model. Please download the pretrained models from [Google Drive](https://drive.google.com/drive/folders/1T8pnkr3cRKQQmPC3MBZDnIZ0f-z5D1pE?usp=sharing).
+
+## Citation
+
+If you find our code or paper useful, please consider citing
+
+    @inproceedings{udiff,
+        title={UDiFF: Generating Conditional Unsigned Distance Fields with Optimal Wavelet Diffusion},
+        author={Zhou, Junsheng and Zhang, Weiqi and Ma, Baorui and Shi, Kanle and Liu, Yu-Shen and Han, Zhizhong},
+        booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+        year={2024}
+    }
