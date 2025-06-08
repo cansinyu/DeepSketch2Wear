@@ -17,15 +17,24 @@ Please ref to [UDiFF](https://github.com/weiqi-zhang/UDiFF/tree/main) for genera
 ### Sketch data creation
 Please refer to  `prepare_sketch.py` for details.
 
-## Training
+## Training & Inference
 ### Stage 1: Base Diffusion Model
-To train the base diffusion model:
+Training:
 ```
 bash scripts/train.sh
 ```
+Inference:
+```
+bash scripts/generate.sh
+```
 ### Stage 2: Subdivision Diffusion Model
-To train the enhanced subdivision model:
+Training:
 ```
 bash scripts/train_super.sh
 ```
+Inference:
+```
+Inference:
+```
+bash sc
 Note: All training scripts are located in the `scripts/` directory. Refer to the individual script files for additional configuration options and parameters.
