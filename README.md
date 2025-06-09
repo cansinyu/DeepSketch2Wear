@@ -42,11 +42,11 @@ Note: All scripts are located in the `scripts/` directory. Refer to the individu
 
 For texture generation, we recommend using [SyncMVD](https://github.com/LIU-Yuxin/SyncMVD). Follow these steps:
 
-### 1. Clone the SyncMVD Repository:
+1. Clone the SyncMVD Repository:
 ```
 git clone https://github.com/LIU-Yuxin/SyncMVD.git
 cd SyncMVD
 ```
-### 2. Follow SyncMVD's Setup Instructions to install dependencies and prepare the environment.
-### 3. Generate Textures:
+2. Follow SyncMVD's Setup Instructions to install dependencies and prepare the environment.
+3. Generate Textures:
 Use SyncMVD with the output meshes from our model (saved in ./output/) as input.
