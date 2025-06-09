@@ -29,7 +29,7 @@ Please refer to `prepare_sketch.py` for sketch data preprocessing instructions.
 
 ## 🔍 Pre-trained Models
 
-Pretrained weights are available [here](https://pan.baidu.com/) (Password: `6khe`). After downloading, place them in the `result/` directory.
+Pretrained weights are available [here]([https://pan.baidu.com/](https://pan.baidu.com/s/1a6NyJYHQip37Xw7NaSi_VA?pwd=ygsd)) (Password: `ygsd`). After downloading, place them in the `result/` directory.
 
 ---
 
