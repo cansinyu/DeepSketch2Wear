@@ -1,5 +1,4 @@
 <h1 align="center">DeepSketch2Wear:Democratizing 3D Garment Creation via Freehand Sketches and Text</h1>
-
 ---
 
 ## 🛠️ Installation
