@@ -18,7 +18,7 @@ conda activate sketch2style
 
 Download the required datasets from the following link:
 
-- [UDF & Sketch Data (百度网盘)](https://pan.baidu.com/) (Password: `6khe`)
+- [UDF & Sketch Data](https://pan.baidu.com/) (Password: `6khe`)
 
 ### 🔹 UDF Data
 
