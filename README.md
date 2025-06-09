@@ -29,7 +29,7 @@ Please refer to `prepare_sketch.py` for sketch data preprocessing instructions.
 
 ## 🔍 Pre-trained Models
 
-Pretrained weights are available via Google Drive. After downloading, place them in the `result/` directory.
+Pretrained weights are available [here](https://pan.baidu.com/) (Password: `6khe`). After downloading, place them in the `result/` directory.
 
 ---
 
