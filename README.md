@@ -38,4 +38,4 @@ bash scripts/generate_super.sh
 ```
 Note: All scripts are located in the `scripts/` directory. Refer to the individual script files for additional configuration options and parameters.
 ## Texture generation
-Please ref to [SyncMVD]([https://github.com/weiqi-zhang/UDiFF/tree/main](https://github.com/LIU-Yuxin/SyncMVD))for Texture generation.
+Please ref to [SyncMVD]([https://github.com/weiqi-zhang/UDiFF/tree/main](https://github.com/LIU-Yuxin/SyncMVD)) for Texture generation.
