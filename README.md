@@ -17,7 +17,7 @@ Please ref to [UDiFF](https://github.com/weiqi-zhang/UDiFF/tree/main) for genera
 ### Sketch data creation
 Please refer to  `prepare_sketch.py` for details.
 
-###Pre-trained Models
+## Pre-trained Models
 We provide the pretrained models. Please download the pretrained models from Google Drive and put them in `result/`.
 
 ## Training & Inference
