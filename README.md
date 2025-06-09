@@ -1,4 +1,4 @@
-<h1 align="center">DeepSketch2Wear</h1>
+<h1 align="center">DeepSketch2Wear:Democratizing 3D Garment Creation via Freehand Sketches and Text</h1>
 <p align="center">Democratizing 3D Garment Creation via Freehand Sketches and Text</p>
 
 ---
