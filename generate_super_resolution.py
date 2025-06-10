@@ -54,58 +54,12 @@ def generate_meshes(
     if based_gt:
         save_path += "_gt"
     ensure_directory(save_path)
-
-    # 遍历npy_folder下的所有一级子文件夹
-    # first_level_subfolders = [f.path for f in os.scandir(npy_folder) if f.is_dir()]
-
-    # selected_npy_files = []
-
-    # # 遍历npy_folder下的所有一级子文件夹
-    # for first_level_subfolder in os.listdir(npy_folder):
-    #     first_level_path = os.path.join(npy_folder, first_level_subfolder)
-    #     if os.path.isdir(first_level_path) and first_level_subfolder != 'super':
-    #         second_level_subfolders = [f.path for f in os.scandir(first_level_path) if f.is_dir()]
-        
-    #         # 如果二级子文件夹数量小于3，则选择所有二级子文件夹
-    #         if len(second_level_subfolders) <= 3:
-    #             selected_second_level_subfolders = second_level_subfolders
-    #         else:
-    #             # 否则，随机选择3个二级子文件夹
-    #             selected_second_level_subfolders = random.sample(second_level_subfolders, 3)
-              
-    #         # 遍历每个选中的二级子文件夹
-    #         for second_level_subfolder in selected_second_level_subfolders:
-    #             # 获取当前二级子文件夹下的所有npy文件路径
-    #             npy_files = glob.glob(os.path.join(second_level_subfolder, '*.npy'))
-    #             selected_npy_files.extend(npy_files)        
-
-    # npy_files = glob.glob(os.path.join(npy_folder, '**/*.npy'), recursive=True) #all
-    # print("Found .npy files:", npy_files)
-  
-    # for npy_file in tqdm(npy_files, desc="Generating Meshes"):
-    #     relative_path = os.path.relpath(npy_file, npy_folder)
-    #     result_folder = os.path.join(save_path, os.path.dirname(relative_path))
-    #     ensure_directory(result_folder)
         
     discrete_diffusion.generate_results_from_folder(
         folder=npy_folder, ema=ema,
         save_path=save_path, batch_size=batch_size, use_ddim=False, steps=steps,
         truncated_index=truncated_index, sort_npy=not based_gt, level=level,
         save_npy=save_npy, save_mesh=save_mesh, start_index=start_index, end_index=end_index)
-    
-
-        # generate_one_mesh(
-        #     model=discrete_diffusion, 
-        #     npy_path=npy_file, 
-        #     output_path=result_folder, 
-        #     ema=ema, 
-        #     steps=steps, 
-        #     truncated_index=truncated_index, 
-        #     level=level,
-        #     save_npy=save_npy,  # 确保传递这些参数
-        #     save_mesh=save_mesh
-        # )
-
 
 if __name__ == '__main__':
     import argparse
