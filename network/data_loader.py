@@ -46,15 +46,7 @@ class occupancy_field_Dataset(torch.utils.data.Dataset):
                         udf_folder, label, lines[i].replace(".mat\n", ".npy"))
                 self.sdf_paths.extend(lines)
         else:
-            # for _data_class in _data_classes:
-            #     _label = snc_category_to_synth_id_all[_data_class]
-            #     # _path = os.path.join(udf_folder, _label)
-            #     self.sdf_paths.extend(
-            #         [p for p in Path(f'{udf_folder}').glob('**/*.npy')])
-            #     print(len(self.sdf_paths))
-
-            # 读取 train.txt 文件
-            txt_file_path = "/home/ubuntu/public_d/cxy/LAS-Diffusion-main/train.txt"
+            txt_file_path = "/home/ubuntu/public_d/cxy/train.txt"
             if os.path.exists(txt_file_path):
                 with open(txt_file_path, 'r') as file:
                     # 读取所有文件名并添加 .npz 后缀
@@ -88,7 +80,7 @@ class occupancy_field_Dataset(torch.utils.data.Dataset):
         self.sketch_folder = sketch_folder
 
         self.feature_folder = os.path.join(sketch_folder, "feature")
-        self.alternate_feature_base = "/home/ubuntu/public_c/cxy/data/las_udf/feature_power"
+        self.alternate_feature_base = "/home/ubuntu/public_c/cxy/data/sketch_feature"
         self.edges_folders = ["Edge_1", "Edge_2", "Edge_3", "Edge_4", "Edge_5", 
                               "Edge_6", "Edge_7", "Edge_8", "Edge_9", "Edge_10"]
 
