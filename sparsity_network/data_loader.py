@@ -48,12 +48,10 @@ class SparsityTransform:
             np.repeat(self.template[None, :], len(
                 indices_64), axis=0).reshape(-1, 3) #对indices_64扩展后得到的细分网格的索引
 
-        # features = np.clip(sample[indices_128[:, 0],
-        #                           indices_128[:, 1], indices_128[:, 2]], -self.sdf_clip_value, self.sdf_clip_value) / self.sdf_clip_value  #限制SDF值的范围
         
 
         features = np.clip(sample[indices_128[:, 0],
-                                  indices_128[:, 1], indices_128[:, 2]], 0, self.sdf_clip_value) / self.sdf_clip_value  #限制SDF值的范围
+                                  indices_128[:, 1], indices_128[:, 2]], 0, self.sdf_clip_value) / self.sdf_clip_value  
         
         xyz = (2 * indices_128 + 1) / self.size - 1  #归一化坐标
 
@@ -101,19 +99,10 @@ class SDF_sparsity_Dataset(data.Dataset):
                         folder, label, lines[i].replace(".mat\n", ".npy"))
                 self.sdf_paths.extend(lines)
         else:
-            # for _data_class in _data_classes:
-            #     _label = snc_category_to_synth_id_all[_data_class]
-            #     _path = os.path.join(folder, _label)
-            #     self.sdf_paths.extend(
-            #         [p for p in Path(f'{_path}').glob('**/*.npy')])
-
             txt_file_path = "train.txt"
             if os.path.exists(txt_file_path):
                 with open(txt_file_path, 'r') as file:
-                    # 读取所有文件名并添加 .npz 后缀
                     file_names = [line.strip() + ".npy" for line in file.readlines()]
-                    # print(file_names)
-                # 将文件名转换为完整路径
                 self.sdf_paths.extend([
                     os.path.join("datasets/udf", file_name) for file_name in file_names
                 ])
