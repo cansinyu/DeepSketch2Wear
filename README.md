@@ -6,7 +6,7 @@ We recommend setting up an [Anaconda](https://www.anaconda.com/) environment usi
 
 ```bash
 conda env create -f environment.yml
-conda activate sketch2style
+conda activate DeepSketch2Wear
 ```
 
 ---
