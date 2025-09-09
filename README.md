@@ -39,7 +39,7 @@ Pretrained weights are available [here](https://pan.baidu.com/s/1TKV73FX-seoTxUe
 
 **Training:**
 
-Training protocol will be released soon
+Coming soon
 
 **Inference:**
 
@@ -52,7 +52,7 @@ bash scripts/generate.sh
 
 **Training:**
 
-Training protocol will be released soon
+Coming soon
 
 **Inference:**
 
