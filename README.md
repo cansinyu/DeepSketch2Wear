@@ -39,9 +39,7 @@ Pretrained weights are available [here](https://pan.baidu.com/s/1TKV73FX-seoTxUe
 
 **Training:**
 
-```bash
-bash scripts/train.sh
-```
+敬请期待
 
 **Inference:**
 
@@ -54,9 +52,7 @@ bash scripts/generate.sh
 
 **Training:**
 
-```bash
-bash scripts/train_super.sh
-```
+敬请期待
 
 **Inference:**
 
