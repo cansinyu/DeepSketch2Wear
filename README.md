@@ -45,9 +45,7 @@ bash scripts/train.sh
 
 **Inference:**
 
-```bash
-bash scripts/generate.sh
-```
+敬请期待
 
 ---
 
