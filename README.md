@@ -45,8 +45,9 @@ bash scripts/train.sh
 
 **Inference:**
 
-敬请期待
-
+```bash
+bash scripts/generate.sh
+```
 ---
 
 ### ✨ Stage 2: Subdivision Diffusion Model
