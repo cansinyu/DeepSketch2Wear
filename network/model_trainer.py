@@ -4,7 +4,7 @@ from torch.utils.data import DataLoader
 from network.model_utils import EMA
 from network.data_loader import occupancy_field_Dataset
 from pathlib import Path
-from torch.optim import AdamW,Adam
+from torch.optim import AdamW, Adam
 from utils.utils import update_moving_average
 from pytorch_lightning import LightningModule
 from network.model import OccupancyDiffusion
@@ -16,7 +16,7 @@ import random
 class DiffusionModel(LightningModule):
     def __init__(
         self,
-        sdf_folder: str = "",
+        udf_folder: str = "",
         sketch_folder: str = "",
         data_class: str = "chair",
         results_folder: str = './results',
@@ -72,7 +72,7 @@ class DiffusionModel(LightningModule):
         self.batch_size = batch_size
         self.lr = lr
         self.image_size = image_size
-        self.sdf_folder = sdf_folder
+        self.udf_folder = udf_folder
         self.sketch_folder = sketch_folder
         self.data_class = data_class
         self.data_augmentation = data_augmentation
@@ -115,7 +115,7 @@ class DiffusionModel(LightningModule):
         return [optimizer]
 
     def train_dataloader(self):
-        _dataset = occupancy_field_Dataset(sdf_folder=self.sdf_folder,
+        _dataset = occupancy_field_Dataset(udf_folder=self.udf_folder,
                                            sketch_folder=self.sketch_folder,
                                            data_class=self.data_class,
                                            size=self.image_size,
