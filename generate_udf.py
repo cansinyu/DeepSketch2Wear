@@ -45,10 +45,10 @@ def generate_based_on_sketch_batch(
 
     for subfolder in subfolders:
         subfolder = subfolder.strip()  # Clean any extra whitespace or newline characters
-        subfolder_path = "datasets/cloth_data/vr_png"
+        subfolder_path = "sketch"
 
         # Check if the subfolder exists and the image is present
-        sketch_path = os.path.join(subfolder_path, f"{subfolder}.png")
+        sketch_path = os.path.join(subfolder_path, subfolder, "Edge_1/edge_front.png")
         if not os.path.exists(sketch_path):
             print(f"Skipping {sketch_path}, file does not exist.")
             continue
