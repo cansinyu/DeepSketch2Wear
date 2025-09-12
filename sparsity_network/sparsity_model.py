@@ -4,12 +4,12 @@ from tqdm import tqdm
 from network.model_utils import *
 from sparsity_network.unet import Sparsity_UNetModel
 from random import random
-from einops import  repeat
+from einops import repeat
 from torch.special import expm1
 from ocnn.octree import Octree
 
 
-class SDFDiffusion(nn.Module):
+class UDFDiffusion(nn.Module):
     def __init__(
             self,
             base_size: int = 32,
@@ -18,14 +18,14 @@ class SDFDiffusion(nn.Module):
             verbose: bool = False,
             eps: float = 1e-6,
             noise_schedule: str = "linear",
-            sdf_clip_value: float = 0.05,
+            udf_clip_value: float = 0.05,
     ):
         super().__init__()
         self.base_size = base_size
         self.upfactor = upfactor
         self.eps = eps
         self.verbose = verbose
-        self.sdf_clip_value = sdf_clip_value
+        self.udf_clip_value = udf_clip_value
         if noise_schedule == "linear":
             self.log_snr = beta_linear_log_snr
         elif noise_schedule == "cosine":
@@ -58,10 +58,10 @@ class SDFDiffusion(nn.Module):
 
         # don't need self condition
         pred = self.denoise_fn(x_t, noise_level, octree, None)
-        sdf_loss = (pred - x_start) ** 2
+        udf_loss = (pred - x_start) ** 2
         loss = torch.zeros((batch_size,), device=self.device)
         for i in range(batch_size):
-            loss[i] = sdf_loss[batch_id == i].mean()
+            loss[i] = udf_loss[batch_id == i].mean()
 
         return loss
 
@@ -81,7 +81,7 @@ class SDFDiffusion(nn.Module):
         time_pairs = self.get_sampling_timesteps(
             1, device=self.device, steps=steps)  #获取采样时间步
 
-        if verbose: 
+        if verbose:
             loops =  tqdm(time_pairs, desc='sampling loop time step')
         else:
             loops = time_pairs
@@ -96,7 +96,7 @@ class SDFDiffusion(nn.Module):
                 noise_feature, log_snr, octree) #使用当前噪声特征和 SNR 进行去噪处理，得到去噪后的x_start
 
             x_start.clamp_(-1, 1)
-            
+
             c = -expm1(log_snr - log_snr_next)
 
             mean = alpha_next * (noise_feature * (1 - c) / alpha + c * x_start)
@@ -116,7 +116,7 @@ class SDFDiffusion(nn.Module):
         time_pairs = self.get_sampling_timesteps(
             1, device=self.device, steps=steps)
 
-        if verbose: 
+        if verbose:
             loops =  tqdm(time_pairs, desc='sampling loop time step')
         else:
             loops = time_pairs
