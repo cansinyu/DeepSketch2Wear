@@ -12,13 +12,13 @@ import matplotlib.pyplot as plt
 
 
 class SparsityTransform:
-    def __init__(self, depth: int, full_depth: int, size: int, sdf_clip_value: float,
+    def __init__(self, depth: int, full_depth: int, size: int, udf_clip_value: float,
                  noise_level: float):
         super().__init__()
         self.depth = depth
         self.full_depth = full_depth
         self.size = size
-        self.sdf_clip_value = sdf_clip_value #0.05
+        self.udf_clip_value = udf_clip_value #0.05
         self.noise_level = noise_level #0.1
 
         self.template = generate_template(2)
@@ -51,7 +51,7 @@ class SparsityTransform:
         
 
         features = np.clip(sample[indices_128[:, 0],
-                                  indices_128[:, 1], indices_128[:, 2]], 0, self.sdf_clip_value) / self.sdf_clip_value  
+                                  indices_128[:, 1], indices_128[:, 2]], 0, self.udf_clip_value) / self.udf_clip_value  
         
         xyz = (2 * indices_128 + 1) / self.size - 1  #归一化坐标
 
@@ -73,8 +73,8 @@ class SparsityTransform:
         return octree
 
 
-class SDF_sparsity_Dataset(data.Dataset):
-    def __init__(self, folder: str, data_class: str, size: int, sdf_clip_value: float,
+class UDF_sparsity_Dataset(data.Dataset):
+    def __init__(self, folder: str, data_class: str, size: int, udf_clip_value: float,
                  noise_level: float, split_dataset: bool = False, data_augmentation=False):
         super().__init__()
         if data_class == "class_5":
@@ -86,7 +86,7 @@ class SDF_sparsity_Dataset(data.Dataset):
         else:
             _data_classes = [data_class]
 
-        self.sdf_paths = []
+        self.udf_paths = []
         if split_dataset: #False
             assert data_class != "all"
             for _data_class in _data_classes:
@@ -97,16 +97,16 @@ class SDF_sparsity_Dataset(data.Dataset):
                 for i in range(len(lines)):
                     lines[i] = os.path.join(
                         folder, label, lines[i].replace(".mat\n", ".npy"))
-                self.sdf_paths.extend(lines)
+                self.udf_paths.extend(lines)
         else:
             txt_file_path = "train.txt"
             if os.path.exists(txt_file_path):
                 with open(txt_file_path, 'r') as file:
                     file_names = [line.strip() + ".npy" for line in file.readlines()]
-                self.sdf_paths.extend([
+                self.udf_paths.extend([
                     os.path.join("datasets/udf", file_name) for file_name in file_names
                 ])
-                print(f"Total number of files loaded: {len(self.sdf_paths)}")
+                print(f"Total number of files loaded: {len(self.udf_paths)}")
             else:
                 print(f"Warning: No train.txt file found at {txt_file_path}")
             
@@ -115,31 +115,31 @@ class SDF_sparsity_Dataset(data.Dataset):
             assert data_class == "class_5"
             mix_label = "00000002"
             _path = os.path.join(folder, mix_label)
-            self.sdf_paths.extend(
+            self.udf_paths.extend(
                 [p for p in Path(f'{_path}').glob('**/*.npy')])
 
         depth = int(np.log2(size))
         full_depth = 1
 
-        self.transform = SparsityTransform(depth=depth, full_depth=full_depth, size=size, sdf_clip_value=sdf_clip_value,
+        self.transform = SparsityTransform(depth=depth, full_depth=full_depth, size=size, udf_clip_value=udf_clip_value,
                                            noise_level=noise_level)
 
     def __len__(self):
-        return len(self.sdf_paths)
+        return len(self.udf_paths)
 
     def __getitem__(self, index):
 
-        sample = np.load(self.sdf_paths[index])
+        sample = np.load(self.udf_paths[index])
         output = self.transform(sample, index)
         return output
 
 
-def get_shapenet_sparsity_dataset(folder, data_class: str, size: int, sdf_clip_value: float,
+def get_shapenet_sparsity_dataset(folder, data_class: str, size: int, udf_clip_value: float,
                                   noise_level: float, split_dataset: bool = False, data_augmentation=False):
     collate_batch = CollateBatch(merge_points=True)
 
-    dataset = SDF_sparsity_Dataset(
-        folder=folder, data_class=data_class, size=size, sdf_clip_value=sdf_clip_value,
+    dataset = UDF_sparsity_Dataset(
+        folder=folder, data_class=data_class, size=size, udf_clip_value=udf_clip_value,
         noise_level=noise_level, split_dataset=split_dataset, data_augmentation=data_augmentation)
 
     return dataset, collate_batch
@@ -191,14 +191,14 @@ class SparsityTransform_for_forward:
         return octree
 
 
-class SDF_sparsity_Dataset_for_forward(data.Dataset):
+class UDF_sparsity_Dataset_for_forward(data.Dataset):
     def __init__(self, folder: str, size: int, base_size: int, sort_npy: bool = True, start_index: int = 0, end_index: int = 10000):
         super().__init__()
         # print(folder)
-        sdf_paths = [p for p in Path(f'{folder}').glob('**/*.npy')]
+        udf_paths = [p for p in Path(f'{folder}').glob('**/*.npy')]
         if sort_npy:
-            sdf_paths.sort(key=self.sort_func)
-        self.paths = sdf_paths[start_index:end_index]
+            udf_paths.sort(key=self.sort_func)
+        self.paths = udf_paths[start_index:end_index]
         depth = int(np.log2(size))
         full_depth = 1
         self.transform = SparsityTransform_for_forward(
@@ -220,6 +220,6 @@ class SDF_sparsity_Dataset_for_forward(data.Dataset):
 
 def get_shapenet_sparsity_dataset_for_forward(folder, size: int, base_size: int, sort_npy: bool = True, start_index: int = 0, end_index: int = 10000):
     collate_batch = CollateBatch(merge_points=True)
-    dataset = SDF_sparsity_Dataset_for_forward(
+    dataset = UDF_sparsity_Dataset_for_forward(
         folder=folder, size=size, base_size=base_size, sort_npy=sort_npy, start_index=start_index, end_index=end_index)
     return dataset, collate_batch
