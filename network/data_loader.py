@@ -33,7 +33,7 @@ class occupancy_field_Dataset(torch.utils.data.Dataset):
         else:
             _data_classes = [data_class]
 
-        self.sdf_paths = []
+        self.udf_paths = []
         if split_dataset:
             assert data_class != "all"
             for _data_class in _data_classes:
@@ -44,7 +44,7 @@ class occupancy_field_Dataset(torch.utils.data.Dataset):
                 for i in range(len(lines)):
                     lines[i] = os.path.join(
                         udf_folder, label, lines[i].replace(".mat\n", ".npy"))
-                self.sdf_paths.extend(lines)
+                self.udf_paths.extend(lines)
         else:
             txt_file_path = "/home/ubuntu/public_d/cxy/train.txt"
             if os.path.exists(txt_file_path):
@@ -53,10 +53,10 @@ class occupancy_field_Dataset(torch.utils.data.Dataset):
                     file_names = [line.strip() + ".npy" for line in file.readlines()]
                     # print(file_names)
                 # 将文件名转换为完整路径
-                self.sdf_paths.extend([
+                self.udf_paths.extend([
                     os.path.join(udf_folder, file_name) for file_name in file_names
                 ])
-                print(f"Total number of files loaded: {len(self.sdf_paths)}")
+                print(f"Total number of files loaded: {len(self.udf_paths)}")
             else:
                 print(f"Warning: No train.txt file found at {txt_file_path}")
 
@@ -67,7 +67,7 @@ class occupancy_field_Dataset(torch.utils.data.Dataset):
             else:
                 mix_label = "00000002"
             _path = os.path.join(udf_folder, mix_label)
-            self.sdf_paths.extend(
+            self.udf_paths.extend(
                 [p for p in Path(f'{_path}').glob('**/*.npy')])
 
         self.use_sketch_condition = use_sketch_condition
@@ -81,7 +81,7 @@ class occupancy_field_Dataset(torch.utils.data.Dataset):
 
         self.feature_folder = os.path.join(sketch_folder, "feature")
         self.alternate_feature_base = "/home/ubuntu/public_c/cxy/data/sketch_feature"
-        self.edges_folders = ["Edge_1", "Edge_2", "Edge_3", "Edge_4", "Edge_5", 
+        self.edges_folders = ["Edge_1", "Edge_2", "Edge_3", "Edge_4", "Edge_5",
                               "Edge_6", "Edge_7", "Edge_8", "Edge_9", "Edge_10"]
 
         if self.use_sketch_condition:
@@ -108,13 +108,13 @@ class occupancy_field_Dataset(torch.utils.data.Dataset):
                 self.feature_folder, "an_object.npy")).astype(np.float32)
 
     def __len__(self):
-        return len(self.sdf_paths)
+        return len(self.udf_paths)
 
     def __getitem__(self, index):
-        sdf_path = self.sdf_paths[index]
-        sdf = np.load(sdf_path)
+        udf_path = self.udf_paths[index]
+        udf = np.load(udf_path)
 
-        model_name = str(sdf_path).split(".")[0]
+        model_name = str(udf_path).split(".")[0]
         # print(model_name)
         data_id = model_name.split("/")[-1]
         model_name = os.path.join(model_name.split("/")[-1])
@@ -175,7 +175,7 @@ class occupancy_field_Dataset(torch.utils.data.Dataset):
             if random() < self.feature_drop_out:
                 text_feature = self.an_object_feature
             res["text_feature"] = text_feature
-            
+
             if self.vit_global and not self.vit_local:
                 # ablation study 1 in the paper
                 sketch_view_index = np.random.randint(0, 5 * SKETCH_PER_VIEW)
@@ -184,13 +184,13 @@ class occupancy_field_Dataset(torch.utils.data.Dataset):
                         self.feature_folder, model_name, f"{sketch_view_index:02d}.npy"))
                 except Exception as e:
                     image_feature = self.white_image_feature
-                    
+
                 if random() < self.feature_drop_out:
                     image_feature = self.white_image_feature
                 res["text_feature"] = image_feature[0]
 
-        occupancy_high = np.where(sdf < TSDF_VALUE, np.ones_like(
-            sdf, dtype=np.float32), np.zeros_like(sdf, dtype=np.float32))
+        occupancy_high = np.where(udf < TSDF_VALUE, np.ones_like(
+            udf, dtype=np.float32), np.zeros_like(udf, dtype=np.float32))
         occupancy_low = skimage.measure.block_reduce(
             occupancy_high, (self.multiplier, self.multiplier, self.multiplier), np.max)
         res["occupancy"] = np.expand_dims(2 * occupancy_low - 1, axis=0)
