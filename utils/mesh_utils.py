@@ -4,34 +4,34 @@ import trimesh
 from utils.utils import scale_to_unit_sphere_in_place
 
 
-def augment_sdf(sdf):
+def augment_udf(udf):
     index = np.random.randint(0, 9)
     random_number = np.random.rand()
     if np.random.rand() < 0.5:
         if random_number < 1/3:
-            _sdf = np.concatenate(
-                [sdf[index:, :, :], np.ones_like(sdf[0:index, :, :])], 0)
+            _udf = np.concatenate(
+                [udf[index:, :, :], np.ones_like(udf[0:index, :, :])], 0)
         elif random_number < 2/3:
-            _sdf = np.concatenate(
-                [sdf[:, index:, :], np.ones_like(sdf[:, 0:index, :])], 1)
+            _udf = np.concatenate(
+                [udf[:, index:, :], np.ones_like(udf[:, 0:index, :])], 1)
         else:
-            _sdf = np.concatenate(
-                [sdf[:, :, index:], np.ones_like(sdf[:, :, 0:index])], 2)
+            _udf = np.concatenate(
+                [udf[:, :, index:], np.ones_like(udf[:, :, 0:index])], 2)
     else:
         if random_number < 1/3:
-            _sdf = np.concatenate(
-                [np.ones_like(sdf[0:index, :, :]), sdf[0:128-index, :, :]], 0)
+            _udf = np.concatenate(
+                [np.ones_like(udf[0:index, :, :]), udf[0:128-index, :, :]], 0)
         elif random_number < 2/3:
-            _sdf = np.concatenate(
-                [np.ones_like(sdf[:, 0:index, :]), sdf[:, 0:128-index, :]], 1)
+            _udf = np.concatenate(
+                [np.ones_like(udf[:, 0:index, :]), udf[:, 0:128-index, :]], 1)
         else:
-            _sdf = np.concatenate(
-                [np.ones_like(sdf[:, :, 0:index]), sdf[:, :, 0:128-index]], 2)
-    return _sdf
+            _udf = np.concatenate(
+                [np.ones_like(udf[:, :, 0:index]), udf[:, :, 0:128-index]], 2)
+    return _udf
 
 
-def process_sdf(volume, level=0, padding=False, spacing=None, offset=-1, normalize=False, clean=True, smooth=False):
-    #输入：volume SDF体积  输出：mesh
+def process_udf(volume, level=0, padding=False, spacing=None, offset=-1, normalize=False, clean=True, smooth=False):
+    #输入：volume UDF体积  输出：mesh
     # 填充（Padding）：可选择性地在体积周围添加常量值的边界。
     # 间距（Spacing）：如果没有提供，则根据体积的维度设置顶点之间的间距。
     # Marching Cubes：根据指定的水平计算网格的顶点、面和法线。
