@@ -1,7 +1,7 @@
 import copy
 from tqdm import tqdm
 from utils.utils import set_requires_grad
-from utils.mesh_utils import process_sdf
+from utils.mesh_utils import process_udf
 from torch.utils.data import DataLoader
 from network.model_utils import EMA
 from sparsity_network.data_loader import get_shapenet_sparsity_dataset, get_shapenet_sparsity_dataset_for_forward
@@ -9,14 +9,14 @@ from pathlib import Path
 from torch.optim import AdamW
 from utils.utils import update_moving_average
 from pytorch_lightning import LightningModule
-from sparsity_network.sparsity_model import SDFDiffusion
+from sparsity_network.sparsity_model import UDFDiffusion
 import torch.nn as nn
 from ocnn.octree import Octree
 import os
 import torch
 import numpy as np
 import ocnn
-from utils.sparsity_utils import voxel2octree, octree2sdfgrid
+from utils.sparsity_utils import voxel2octree, octree2udfgrid
 
 
 class Sparsity_DiffusionModel(LightningModule):
@@ -37,7 +37,7 @@ class Sparsity_DiffusionModel(LightningModule):
         data_augmentation: bool = False,
         training_epoch: int = 100,
         gradient_clip_val: float = 1.0,
-        sdf_clip_value: float = 0.015,
+        udf_clip_value: float = 0.015,
         noise_schedule="linear",
         noise_level: float = 0.1,
     ):
@@ -47,19 +47,19 @@ class Sparsity_DiffusionModel(LightningModule):
 
         self.results_folder = Path(results_folder)
         self.noise_level = noise_level
-        self.model = SDFDiffusion(base_size=base_size,
+        self.model = UDFDiffusion(base_size=base_size,
                                   upfactor=upfactor,
                                   base_channels=base_channels,
                                   verbose=verbose,
                                   noise_schedule=noise_schedule,
-                                  sdf_clip_value=sdf_clip_value)
+                                  udf_clip_value=udf_clip_value)
 
         self.octree_feature = ocnn.modules.InputFeature('F', True)
         self.batch_size = batch_size
         self.lr = lr
         self.base_size = base_size
         self.upfactor = upfactor
-        self.sdf_clip_value = sdf_clip_value
+        self.udf_clip_value = udf_clip_value
         self.image_size = base_size * upfactor
         self.dataset_folder = dataset_folder
         self.data_class = data_class
@@ -88,7 +88,7 @@ class Sparsity_DiffusionModel(LightningModule):
     #加载训练数据集
     def train_dataloader(self):
         dataset, collate_fn = get_shapenet_sparsity_dataset(self.dataset_folder, self.data_class,
-                                                            size=self.image_size, sdf_clip_value=self.sdf_clip_value,
+                                                            size=self.image_size, udf_clip_value=self.udf_clip_value,
                                                             noise_level=self.noise_level,
                                                             split_dataset=self.split_dataset,
                                                             data_augmentation=self.data_augmentation)
@@ -135,7 +135,7 @@ class Sparsity_DiffusionModel(LightningModule):
 
     @torch.no_grad()
     def generate_results_from_single_voxel(self, low_res_voxel, ema=True, steps=1000,
-                                           use_ddim: bool = False, truncated_index: float = 0., verbose: bool = False): #输入：low_res_voxel低分辨率体素数据  输出：SDF 网格
+                                           use_ddim: bool = False, truncated_index: float = 0., verbose: bool = False): #输入：low_res_voxel低分辨率体素数据  输出：UDF 网格
 
         generator = self.ema_model if ema else self.model
         assert low_res_voxel.shape[-1] == self.base_size #断言输入的体素数据的尺寸与模型的预期大小一致
@@ -147,7 +147,7 @@ class Sparsity_DiffusionModel(LightningModule):
         data = generator.sample(data, octree, use_ddim=use_ddim, steps=steps,
                                 truncated_index=truncated_index, verbose=verbose) #使用扩散模型对数据进行采样（生成新的数据）。
 
-        return octree2sdfgrid(data, octree=octree, depth=octree.depth, scale=self.sdf_clip_value, nempty=True) #将生成的 data 转换为一个 SDF 网格
+        return octree2udfgrid(data, octree=octree, depth=octree.depth, scale=self.udf_clip_value, nempty=True) #将生成的 data 转换为一个 UDF 网格
 
     @torch.no_grad()
     def generate_results_from_folder(self, folder, save_path, ema=True, batch_size=8,
@@ -170,7 +170,7 @@ class Sparsity_DiffusionModel(LightningModule):
             drop_last=False)
 
         index = start_index
-        paths = dataset.get_paths() 
+        paths = dataset.get_paths()
         for _, batch in tqdm(enumerate(dataloader, 0), total=len(dataloader), desc="Processing batches"):
             octree: Octree = batch['octree'].to(self.device)
 
@@ -178,8 +178,8 @@ class Sparsity_DiffusionModel(LightningModule):
             data = generator.sample(
                 data, octree, use_ddim=use_ddim, steps=steps, truncated_index=truncated_index, verbose=verbose)
 
-            res = octree2sdfgrid(data, octree=octree, depth=octree.depth,
-                                scale=self.sdf_clip_value, nempty=True)
+            res = octree2udfgrid(data, octree=octree, depth=octree.depth,
+                                scale=self.udf_clip_value, nempty=True)
             for i in range(octree.batch_size):
                 field = res[i]
                 original_path = paths[index]  # 获取原文件路径
@@ -196,7 +196,7 @@ class Sparsity_DiffusionModel(LightningModule):
                         np.save(os.path.join(save_dir, f"{original_filename}.npy"), field)
                         print(os.path.join(save_dir, f"{original_filename}.npy"))
                     if save_mesh:
-                        mesh = process_sdf(field, level=level, normalize=True)
+                        mesh = process_udf(field, level=level, normalize=True)
                         mesh.export(os.path.join(save_dir, f"{original_filename}.obj"))
                         print(os.path.join(save_dir, f"{original_filename}.obj"))
                 except Exception as e:
