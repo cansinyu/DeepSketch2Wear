@@ -21,10 +21,6 @@ Download the required datasets from the following link:
 
 Refer to the [UDiFF](https://github.com/weiqi-zhang/UDiFF/tree/main) to generate UDF fields from DeepFashion or your own data.
 
-### 🔹 Sketch Data
-
-Please refer to `prepare_sketch.py` for sketch data preprocessing instructions.
-
 ---
 
 ## 🔍 Pre-trained Models
