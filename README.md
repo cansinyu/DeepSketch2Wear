@@ -39,12 +39,14 @@ Pretrained weights are available [here](https://pan.baidu.com/s/1TKV73FX-seoTxUe
 
 **Training:**
 
-Coming soon
+```bash
+bash scripts/train.sh
+```
 
 **Inference:**
 
 ```bash
-bash scripts/generate.sh
+bash scripts/generate_udf.sh
 ```
 ---
 
@@ -52,12 +54,14 @@ bash scripts/generate.sh
 
 **Training:**
 
-Coming soon
+```bash
+bash scripts/train_super.sh
+```
 
 **Inference:**
 
 ```bash
-bash scripts/generate_super.sh
+bash scripts/generate_udf_super.sh
 ```
 
 > 📁 **Note:** All scripts are located in the `scripts/` directory. You can customize configurations by editing these scripts.
