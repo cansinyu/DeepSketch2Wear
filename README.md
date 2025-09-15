@@ -21,7 +21,7 @@ Download the required datasets from the following link:
 
 ## 🔍 Pre-trained Models
 
-Pretrained weights are available [here](https://pan.baidu.com/s/1TKV73FX-seoTxUeWvtdpzQ) . After downloading, place them in the `result/` directory.
+Pretrained weights are available [here](https://pan.baidu.com/s/1TKV73FX-seoTxUeWvtdpzQ) . After downloading, place them in the `results` directory.
 
 ---
 
