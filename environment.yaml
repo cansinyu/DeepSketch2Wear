@@ -2,7 +2,6 @@ name: DeepSketch2Wear
 channels:
   - https://conda.anaconda.org/pytorch3d
   - https://conda.anaconda.org/anaconda
-  - <unknown>
   - https://conda.anaconda.org/iopath
   - https://conda.anaconda.org/pytorch
   - https://conda.anaconda.org/nvidia
