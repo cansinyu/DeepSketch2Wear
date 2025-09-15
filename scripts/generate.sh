@@ -1,4 +1,4 @@
-python generate_udf.py \
+python generate.py \
 --generate_method generate_based_on_sketch_batch \
 --model_path ./results/udf/epoch=999.ckpt \
 --sketch_file ./datasets/test.txt \
