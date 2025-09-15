@@ -25,7 +25,7 @@ Refer to the [UDiFF](https://github.com/weiqi-zhang/UDiFF/tree/main) to generate
 
 ## 🔍 Pre-trained Models
 
-Pretrained weights are available [here](https://pan.baidu.com/s/1TKV73FX-seoTxUeWvtdpzQ) (Password: `pkrq`). After downloading, place them in the `result/` directory.
+Pretrained weights are available [here](https://pan.baidu.com/s/1TKV73FX-seoTxUeWvtdpzQ) . After downloading, place them in the `result/` directory.
 
 ---
 
