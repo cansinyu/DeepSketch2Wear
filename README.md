@@ -56,7 +56,7 @@ bash scripts/train_super.sh
 bash scripts/generate_super.sh
 ```
 
-> 📁 **Note:** All scripts are located in the `scripts/` directory. You can customize configurations by editing these scripts.
+> 📁 **Note:** All scripts are located in the `scripts` directory. You can customize configurations by editing these scripts.
 
 ---
 
