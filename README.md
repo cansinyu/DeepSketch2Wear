@@ -17,10 +17,6 @@ Download the required datasets from the following link:
 
 [Datasets](https://pan.baidu.com/s/1-6MWddmB0DexTDrknT3swQ) (Password: `n5ty`)
 
-### 🔹 UDF Data
-
-Refer to the [UDiFF](https://github.com/weiqi-zhang/UDiFF/tree/main) to generate UDF fields from DeepFashion or your own data.
-
 ---
 
 ## 🔍 Pre-trained Models
