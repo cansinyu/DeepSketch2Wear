@@ -15,7 +15,7 @@ conda activate DeepSketch2Wear
 
 Download the required datasets from the following link:
 
-- [Datasets](https://pan.baidu.com/s/1-6MWddmB0DexTDrknT3swQ) (Password: `n5ty`)
+[Datasets](https://pan.baidu.com/s/1-6MWddmB0DexTDrknT3swQ) (Password: `n5ty`)
 
 ### 🔹 UDF Data
 
